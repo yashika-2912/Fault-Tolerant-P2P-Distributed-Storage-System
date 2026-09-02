@@ -115,6 +115,3 @@ Academic Year 2024–2025.
 ## References
 See the References section of `docs/first_review.pdf` for the full IEEE-formatted list
 (12 references, prioritizing IEEE ICC, GLOBECOM, and CCNC publications).
-
-## GitHub / Project Repository
-[GITHUB REPO URL TO BE FILLED]
