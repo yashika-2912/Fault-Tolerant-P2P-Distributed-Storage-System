@@ -2,6 +2,7 @@
 
 HEARTBEAT_INTERVAL = 1
 HEARTBEAT_TIMEOUT = 4
+COORDINATOR_PORT = 6100
 CHUNK_SIZE = 1 * 1024 * 1024
 REPLICATION_FACTOR = 2
 # Static pre-shared 32-byte demo key — replace via env var before real runs.

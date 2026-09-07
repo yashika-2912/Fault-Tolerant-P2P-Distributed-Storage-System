@@ -6,7 +6,17 @@ import json
 import socket
 import struct
 import threading
+import time
 from pathlib import Path
+
+import sys
+
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+from coordinator.config import COORDINATOR_PORT, HEARTBEAT_INTERVAL
 
 
 HOST = "127.0.0.1"
@@ -35,6 +45,23 @@ def send_message(connection: socket.socket, message: dict) -> None:
     """Send one length-prefixed UTF-8 JSON message."""
     payload = json.dumps(message).encode("utf-8")
     connection.sendall(struct.pack("!I", len(payload)) + payload)
+
+
+def heartbeat_loop(node_id: str, coordinator_host: str, coordinator_port: int, stop_event: threading.Event) -> None:
+    """Send one framed heartbeat each interval; transient coordinator outages are nonfatal."""
+    while not stop_event.is_set():
+        try:
+            with socket.create_connection((coordinator_host, coordinator_port), timeout=SOCKET_TIMEOUT_SECONDS) as connection:
+                connection.settimeout(SOCKET_TIMEOUT_SECONDS)
+                send_message(connection, {"type": "HEARTBEAT", "node_id": node_id, "ts": time.time()})
+                response = receive_message(connection)
+                if response.get("type") == "HEARTBEAT_ACK":
+                    print(f"HEARTBEAT acknowledged: {node_id}")
+                else:
+                    print(f"HEARTBEAT warning: unexpected reply for {node_id}: {response}")
+        except (ConnectionError, OSError, socket.timeout, UnicodeDecodeError, json.JSONDecodeError) as error:
+            print(f"HEARTBEAT warning: coordinator {coordinator_host}:{coordinator_port} unavailable ({error})")
+        stop_event.wait(HEARTBEAT_INTERVAL)
 
 
 def chunk_path(storage_dir: Path, chunk_id: str) -> Path:
@@ -103,8 +130,8 @@ def handle_connection(connection: socket.socket, address: tuple[str, int], stora
             print(f"Connection from {address} ended with error: {error}")
 
 
-def run_server(port: int, node_id: str) -> None:
-    """Run the Day-2 local STORE/FETCH TCP server until interrupted."""
+def run_server(port: int, node_id: str, coordinator_host: str, coordinator_port: int) -> None:
+    """Run the local STORE/FETCH server and its background heartbeat sender."""
     storage_dir = Path(__file__).resolve().parent.parent / "node_data" / node_id
     storage_dir.mkdir(parents=True, exist_ok=True)
 
@@ -113,6 +140,12 @@ def run_server(port: int, node_id: str) -> None:
     server.bind((HOST, port))
     server.listen()
     print(f"Node {node_id} listening on {HOST}:{port}; storing chunks in {storage_dir}")
+    stop_event = threading.Event()
+    threading.Thread(
+        target=heartbeat_loop,
+        args=(node_id, coordinator_host, coordinator_port, stop_event),
+        daemon=True,
+    ).start()
 
     try:
         while True:
@@ -125,17 +158,20 @@ def run_server(port: int, node_id: str) -> None:
     except KeyboardInterrupt:
         print("Shutting down node server.")
     finally:
+        stop_event.set()
         server.close()
 
 
 def parse_args() -> argparse.Namespace:
     """Parse the local node identity and listening port."""
-    parser = argparse.ArgumentParser(description="Day-2 P2P storage node")
+    parser = argparse.ArgumentParser(description="P2P storage node")
     parser.add_argument("--port", type=int, required=True)
     parser.add_argument("--node-id", required=True)
+    parser.add_argument("--coordinator-host", default="127.0.0.1")
+    parser.add_argument("--coordinator-port", type=int, default=COORDINATOR_PORT)
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     arguments = parse_args()
-    run_server(arguments.port, arguments.node_id)
+    run_server(arguments.port, arguments.node_id, arguments.coordinator_host, arguments.coordinator_port)

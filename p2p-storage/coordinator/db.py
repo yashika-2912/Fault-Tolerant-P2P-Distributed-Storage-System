@@ -88,6 +88,18 @@ def get_all_nodes(conn: sqlite3.Connection) -> list[dict]:
     return [dict(row) for row in rows]
 
 
+def update_last_heartbeat(conn: sqlite3.Connection, node_id: str, received_at: float) -> None:
+    """Persist the coordinator receipt timestamp for one node heartbeat."""
+    conn.execute("UPDATE nodes SET last_heartbeat = ? WHERE node_id = ?", (str(received_at), node_id))
+    conn.commit()
+
+
+def update_node_status(conn: sqlite3.Connection, node_id: str, new_status: str) -> None:
+    """Set a node's lifecycle status."""
+    conn.execute("UPDATE nodes SET status = ? WHERE node_id = ?", (new_status, node_id))
+    conn.commit()
+
+
 def insert_replica(conn: sqlite3.Connection, chunk_id: str, node_id: str, role: str) -> None:
     """Insert or refresh one chunk replica's assigned node and role."""
     conn.execute(
