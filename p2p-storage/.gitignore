@@ -3,5 +3,7 @@ node_data/
 __pycache__/
 *.pyc
 experiments/results/*.csv
+experiments/results/*.png
 .env
 venv/
+.venv/
