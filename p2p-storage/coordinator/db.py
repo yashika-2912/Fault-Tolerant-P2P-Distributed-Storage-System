@@ -1,6 +1,7 @@
 """SQLite schema initialization and minimal Day-5 metadata query helpers."""
 
 import sqlite3
+from datetime import datetime, timezone
 from pathlib import Path
 
 from coordinator.config import DB_PATH
@@ -12,7 +13,7 @@ def init_db(db_path: str | None = None) -> sqlite3.Connection:
     if resolved_path != ":memory:":
         Path(resolved_path).parent.mkdir(parents=True, exist_ok=True)
 
-    connection = sqlite3.connect(resolved_path)
+    connection = sqlite3.connect(resolved_path, timeout=10)
     connection.row_factory = sqlite3.Row
     connection.execute("PRAGMA foreign_keys = ON")
     connection.executescript(
@@ -119,4 +120,39 @@ def get_replicas_for_chunk(conn: sqlite3.Connection, chunk_id: str) -> list[dict
         "SELECT chunk_id, node_id, role FROM replicas WHERE chunk_id = ? ORDER BY role, node_id",
         (chunk_id,),
     ).fetchall()
+    return [dict(row) for row in rows]
+
+
+def insert_file(conn: sqlite3.Connection, file_id: str, filename: str, size_bytes: int, chunk_count: int, merkle_root: str | None) -> None:
+    """Persist immutable metadata for a successfully uploaded file."""
+    conn.execute(
+        "INSERT INTO files (file_id, filename, size_bytes, chunk_count, merkle_root, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+        (file_id, filename, size_bytes, chunk_count, merkle_root, datetime.now(timezone.utc).isoformat()),
+    )
+    conn.commit()
+
+
+def insert_chunk(conn: sqlite3.Connection, chunk_id: str, file_id: str, chunk_index: int, chunk_hash: str) -> None:
+    """Persist an ordered encrypted-chunk record."""
+    conn.execute("INSERT INTO chunks (chunk_id, file_id, chunk_index, chunk_hash) VALUES (?, ?, ?, ?)", (chunk_id, file_id, chunk_index, chunk_hash))
+    conn.commit()
+
+
+def get_file(conn: sqlite3.Connection, file_id: str) -> dict | None:
+    row = conn.execute("SELECT file_id, filename, size_bytes, chunk_count, merkle_root, created_at FROM files WHERE file_id = ?", (file_id,)).fetchone()
+    return dict(row) if row else None
+
+
+def get_chunks_for_file(conn: sqlite3.Connection, file_id: str) -> list[dict]:
+    rows = conn.execute("SELECT chunk_id, file_id, chunk_index, chunk_hash FROM chunks WHERE file_id = ? ORDER BY chunk_index", (file_id,)).fetchall()
+    return [dict(row) for row in rows]
+
+
+def get_node(conn: sqlite3.Connection, node_id: str) -> dict | None:
+    row = conn.execute("SELECT node_id, host, port, status, last_heartbeat FROM nodes WHERE node_id = ?", (node_id,)).fetchone()
+    return dict(row) if row else None
+
+
+def get_active_nodes(conn: sqlite3.Connection) -> list[dict]:
+    rows = conn.execute("SELECT node_id, host, port, status, last_heartbeat FROM nodes WHERE status = 'ACTIVE' ORDER BY node_id").fetchall()
     return [dict(row) for row in rows]
