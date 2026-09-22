@@ -9,6 +9,7 @@ from pathlib import Path
 
 from coordinator.config import COORDINATOR_PORT, HEARTBEAT_INTERVAL, HEARTBEAT_TIMEOUT, NODE_PORTS
 from coordinator.db import get_all_nodes, init_db, insert_node, update_last_heartbeat, update_node_status
+from coordinator.recovery import recover_failed_node
 
 
 HOST = "127.0.0.1"
@@ -119,7 +120,7 @@ def start_heartbeat_listener(host: str = HOST, port: int = COORDINATOR_PORT, db_
         _listener_started = True
 
 
-def check_all_nodes_once(conn, now: float | None = None) -> list[str]:
+def check_all_nodes_once(conn, now: float | None = None, db_path: str | None = None) -> list[str]:
     """Mark ACTIVE nodes stale beyond tau DOWN once; return newly failed IDs.
 
     Nodes with no received heartbeat are ignored until their first heartbeat arrives.
@@ -136,6 +137,12 @@ def check_all_nodes_once(conn, now: float | None = None) -> list[str]:
             update_node_status(conn, node["node_id"], "DOWN")
             failed_nodes.append(node["node_id"])
             print(f"[FAILURE DETECTED] {node['node_id']} missed heartbeat, marked DOWN at {current_time:.3f}")
+    # Repair after the status commits above.  Recovery has its own short-lived
+    # SQLite connection, so it does not share this detector connection across
+    # threads.
+    for node_id in failed_nodes:
+        repaired = recover_failed_node(node_id, db_path)
+        print(f"[RECOVERY] failed={node_id} repaired_chunks={repaired}")
     return failed_nodes
 
 
@@ -144,7 +151,7 @@ def _detector_loop(db_path: str | None) -> None:
     while True:
         conn = init_db(db_path)
         try:
-            check_all_nodes_once(conn)
+            check_all_nodes_once(conn, db_path=db_path)
         finally:
             conn.close()
         time.sleep(HEARTBEAT_INTERVAL)
