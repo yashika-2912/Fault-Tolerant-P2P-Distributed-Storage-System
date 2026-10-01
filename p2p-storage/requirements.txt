@@ -1,3 +1,5 @@
 flask
 pycryptodome
 pytest
+matplotlib
+requests
