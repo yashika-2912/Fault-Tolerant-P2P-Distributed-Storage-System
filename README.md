@@ -1,6 +1,6 @@
 # Fault-Tolerant P2P Distributed Storage System
 
-> **Course Project — Distributed Systems / Computer Networks**
+> **Course Project -- Computer Networks**
 
 A fault-tolerant distributed storage system designed to provide **automatic failure detection, standby-node promotion, selective replica recovery, data integrity verification, encryption, and tamper-evident audit logging** in a small peer-to-peer storage cluster.
 
