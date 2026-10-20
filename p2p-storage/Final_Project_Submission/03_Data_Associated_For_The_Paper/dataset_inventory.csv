@@ -1,0 +1,18 @@
+dataset_id,filename,dataset_type,description,format,source,generation_method,record_count,status
+D01,benchmark_results.csv,measured,12 combined transfer trial rows,CSV,Isolated local project run,Harness or analysis script; no fabricated values,12,observed
+D02,upload_results.csv,measured,12 upload timing observations,CSV,Isolated local project run,Harness or analysis script; no fabricated values,12,observed
+D03,download_results.csv,measured,12 download timing observations,CSV,Isolated local project run,Harness or analysis script; no fabricated values,12,observed
+D04,fault_tolerance_results.csv,measured,3 controlled N1 failure trials,CSV,Isolated local project run,Harness or analysis script; no fabricated values,3,observed
+D05,integrity_verification_results.csv,measured,1 controlled corruption case,CSV,Isolated local project run,Harness or analysis script; no fabricated values,1,observed
+D06,replication_results.csv,measured,15 per-file replica-state checks,CSV,Isolated local project run,Harness or analysis script; no fabricated values,15,observed
+D07,test_file_manifest.csv,measured,4 ephemeral generated payload definitions,CSV,Isolated local project run,Harness or analysis script; no fabricated values,4,observed
+D08,environment_details.json,measured,Captured runtime and host details,JSON,Isolated local project run,Harness or analysis script; no fabricated values,,observed
+D09,experimental_results.xlsx,measured,Workbook of observed and summarized tables,XLSX,Isolated local project run,Harness or analysis script; no fabricated values,,observed
+D10,analysis/benchmark_summary.csv,raw/processed,"Processed means, medians and sample deviations",CSV,Derived/preserved experiment evidence,Harness or analysis script; no fabricated values,,generated/derived
+D11,raw_results/upload_retrieval_raw.csv,raw/processed,Repository harness raw output,CSV,Derived/preserved experiment evidence,Harness or analysis script; no fabricated values,,generated/derived
+D12,raw_results/failure_recovery_raw.csv,raw/processed,Repository harness raw output,CSV,Derived/preserved experiment evidence,Harness or analysis script; no fabricated values,,generated/derived
+D13,raw_results/integrity_probe.json,raw/processed,Raw controlled-corruption evidence,JSON,Derived/preserved experiment evidence,Harness or analysis script; no fabricated values,,generated/derived
+D14,plots/upload_latency_by_size.png,plot,Measured upload latency with sample-standard-deviation bars,PNG,Derived/preserved experiment evidence,Harness or analysis script; no fabricated values,,generated/derived
+D15,plots/download_latency_by_size.png,plot,Measured download latency with sample-standard-deviation bars,PNG,Derived/preserved experiment evidence,Harness or analysis script; no fabricated values,,generated/derived
+D16,plots/throughput_by_size.png,plot,Derived decimal Mbps from observed timings,PNG,Derived/preserved experiment evidence,Harness or analysis script; no fabricated values,,generated/derived
+D17,plots/fault_detection_recovery.png,plot,Three observed failure trials with sample-standard-deviation bars,PNG,Derived/preserved experiment evidence,Harness or analysis script; no fabricated values,,generated/derived

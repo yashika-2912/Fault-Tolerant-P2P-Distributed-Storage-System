@@ -1,0 +1,35 @@
+{
+  "file_size_bytes": 4096,
+  "file_id": "141ed5076af24b75ad445f16feee7791",
+  "chunk_id": "141ed5076af24b75ad445f16feee7791-0",
+  "replicas_before": [
+    [
+      "N1",
+      "PRIMARY"
+    ],
+    [
+      "N2",
+      "SECONDARY"
+    ]
+  ],
+  "corrupted_replica_node": "N1",
+  "expected_encrypted_chunk_sha256": "767e92afd776a7a193997f08ca9865026c9a7bd30e172d71d464346ee421613b",
+  "corrupted_encrypted_chunk_sha256": "523ea80e7ef62e8bcabc1806ae1a813440eb31d169eefd155c7613f402703255",
+  "stored_replica_hash_mismatch": true,
+  "retrieval_http_status": 200,
+  "retrieved_bytes_equal_original": true,
+  "replica_mapping_after": [
+    [
+      "N1",
+      "PRIMARY"
+    ],
+    [
+      "N2",
+      "SECONDARY"
+    ]
+  ],
+  "replica_count_after": 2,
+  "audit_log_verifies_after_download": true,
+  "outcome": "PASS",
+  "procedure": "Upload random 4096-byte payload in isolated project; flip one byte in PRIMARY encrypted chunk on clone-only node storage; GET file and compare returned bytes to original."
+}

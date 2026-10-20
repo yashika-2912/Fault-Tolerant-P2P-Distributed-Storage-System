@@ -1,0 +1,31 @@
+{
+  "pptx_exists": true,
+  "slide_count": 24,
+  "slide_titles_count": 24,
+  "slide_text_shape_count": 245,
+  "pptx_text_present": true,
+  "docx_exists": true,
+  "docx_chapter_heading_count": 20,
+  "docx_expected_chapters": 20,
+  "pdf_exists": true,
+  "pdf_pages": 22,
+  "pdf_header_valid": true,
+  "pdf_eof_valid": true,
+  "pdf_has_chapter_text": true,
+  "csv_observation_rows": {
+    "benchmark_results.csv": 0,
+    "dataset_inventory.csv": 7,
+    "fault_tolerance_results.csv": 0,
+    "integrity_verification_results.csv": 0,
+    "replication_results.csv": 0,
+    "test_file_manifest.csv": 0
+  },
+  "json_valid": true,
+  "diagram_pngs": 4,
+  "manual_diagram_pngs": 4,
+  "analysis_script_exists": true,
+  "analysis_summary_exists": true,
+  "measurement_rows": 0,
+  "benchmark_executed": false,
+  "end_to_end_recovery_executed": false
+}

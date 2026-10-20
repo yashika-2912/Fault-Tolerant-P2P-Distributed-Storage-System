@@ -1,0 +1,42 @@
+﻿{
+    "environment_id":  "local_win_python311_20261021",
+    "captured_at_utc":  "2026-10-20T18:44:30.422762+00:00",
+    "operating_system":  "Windows 11 (reported by Windows build 10.0.26300), 64-bit",
+    "python_version":  "3.11.9",
+    "cpu_model":  "12th Gen Intel(R) Core(TM) i5-1235U",
+    "logical_cpu_count":  12,
+    "physical_memory_gib":  15.7,
+    "package_versions":  {
+                             "Flask":  "3.1.3",
+                             "requests":  "2.32.5",
+                             "pycryptodome":  "3.23.0",
+                             "matplotlib":  "3.11.1"
+                         },
+    "node_configuration":  {
+                               "node_count":  3,
+                               "node_ids":  [
+                                                "N1",
+                                                "N2",
+                                                "N3"
+                                            ],
+                               "replication_factor":  2,
+                               "chunk_size_bytes":  1048576,
+                               "heartbeat_interval_seconds":  1,
+                               "heartbeat_timeout_seconds":  4,
+                               "http_port":  5000,
+                               "node_ports":  [
+                                                  6001,
+                                                  6002,
+                                                  6003
+                                              ],
+                               "heartbeat_port":  6100,
+                               "database":  "SQLite via isolated P2P_DB_PATH"
+                           },
+    "network":  "All services on one Windows host via 127.0.0.1 loopback.",
+    "not_recorded":  [
+                         "per-trial UTC timestamps",
+                         "storage model/free capacity",
+                         "CPU/memory utilization",
+                         "physical network characteristics"
+                     ]
+}

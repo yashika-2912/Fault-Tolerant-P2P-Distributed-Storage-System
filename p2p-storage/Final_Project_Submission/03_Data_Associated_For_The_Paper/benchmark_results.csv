@@ -1,0 +1,13 @@
+run_id,timestamp_utc,scenario,file_size_bytes,node_count,replication_factor,upload_time_ms,download_time_ms,upload_throughput_mbps,download_throughput_mbps,trial_number,status,environment_id
+isolated_project_20261021_000718_s102400_t1,,upload_then_download_local_single_host,102400,3,2,122.938600,51.655400,6.663489,15.858942,1,success,local_win_python311_20261021
+isolated_project_20261021_000718_s102400_t2,,upload_then_download_local_single_host,102400,3,2,103.881100,51.803200,7.885939,15.813695,2,success,local_win_python311_20261021
+isolated_project_20261021_000718_s102400_t3,,upload_then_download_local_single_host,102400,3,2,114.999700,40.037800,7.123497,20.460665,3,success,local_win_python311_20261021
+isolated_project_20261021_000718_s1048576_t1,,upload_then_download_local_single_host,1048576,3,2,91.062800,66.412200,92.118933,126.311250,1,success,local_win_python311_20261021
+isolated_project_20261021_000718_s1048576_t2,,upload_then_download_local_single_host,1048576,3,2,122.545300,74.794100,68.453119,112.156012,2,success,local_win_python311_20261021
+isolated_project_20261021_000718_s1048576_t3,,upload_then_download_local_single_host,1048576,3,2,151.791900,64.810700,55.263871,129.432455,3,success,local_win_python311_20261021
+isolated_project_20261021_000718_s5242880_t1,,upload_then_download_local_single_host,5242880,3,2,727.888600,356.515400,57.622884,117.647204,1,success,local_win_python311_20261021
+isolated_project_20261021_000718_s5242880_t2,,upload_then_download_local_single_host,5242880,3,2,716.949200,249.701700,58.502109,167.972585,2,success,local_win_python311_20261021
+isolated_project_20261021_000718_s5242880_t3,,upload_then_download_local_single_host,5242880,3,2,685.622100,371.730000,61.175158,112.832002,3,success,local_win_python311_20261021
+isolated_project_20261021_000718_s10485760_t1,,upload_then_download_local_single_host,10485760,3,2,1269.181100,736.977000,66.094650,113.824556,1,success,local_win_python311_20261021
+isolated_project_20261021_000718_s10485760_t2,,upload_then_download_local_single_host,10485760,3,2,1289.434800,510.427000,65.056473,164.344911,2,success,local_win_python311_20261021
+isolated_project_20261021_000718_s10485760_t3,,upload_then_download_local_single_host,10485760,3,2,1139.118700,565.398500,73.641211,148.366294,3,success,local_win_python311_20261021

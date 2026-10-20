@@ -1,0 +1,5 @@
+test_file_id,filename_pattern,file_type,file_size_bytes,checksum_algorithm,original_checksum,test_purpose,generation_method
+os_urandom_102400,102400.bin,random binary payload,102400,,,upload/download latency and reconstructed equality,"os.urandom(size) in memory, one payload reused for three trials; not persisted and checksum not recorded"
+os_urandom_1048576,1048576.bin,random binary payload,1048576,,,upload/download latency and reconstructed equality,"os.urandom(size) in memory, one payload reused for three trials; not persisted and checksum not recorded"
+os_urandom_5242880,5242880.bin,random binary payload,5242880,,,upload/download latency and reconstructed equality,"os.urandom(size) in memory, one payload reused for three trials; not persisted and checksum not recorded"
+os_urandom_10485760,10485760.bin,random binary payload,10485760,,,upload/download latency and reconstructed equality,"os.urandom(size) in memory, one payload reused for three trials; not persisted and checksum not recorded"
